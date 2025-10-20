@@ -10,9 +10,6 @@
 {{ $show_organizations := $block.design.show_organizations | default false }}
 {{ $show_role := $block.design.show_role | default true }}
 
-{{/* 加载 people.css 样式，只对 people.html 生效 */}}
-{{ $peoplecss := resources.Get "css/people.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $peoplecss.Permalink }}">
 <div class="row justify-content-center people-widget">
   {{ with $block.content.title }}
     <div class="section-heading col-12 mb-3 text-center">
