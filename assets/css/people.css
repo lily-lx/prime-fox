@@ -4,31 +4,90 @@
 
 .people-widget {
   font-size: 0.8rem;
+  text-align: center;       /* 默认文字居中 */
+  width: 100%;
+}
+
+/* 用户组标题 */
+.people-widget .user-group-row h2 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
-.people-widget .portrait-title h2 {
-  font-size: 1rem;
+/* 头像行容器 */
+.people-widget .user-group-row > .d-flex {
+  display: flex;
+  flex-wrap: wrap;          /* 自动换行 */
+  justify-content: center;  /* 居中排列 */
+  gap: 1rem;                /* 头像间距 */
 }
 
-.people-widget .portrait-title h3 {
-  font-size: 0.7rem;
+/* 每个成员容器 */
+.people-widget .people-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 头像和文字居中 */
+  max-width: 150px;
+  margin-bottom: 1rem;
 }
 
+/* 头像样式 */
 .people-widget .avatar {
-  width: 80%;
+  width: 100%;
   max-width: 150px;
   height: auto;
   border-radius: 50%;
 }
 
+/* 头像形状控制 */
+.people-widget .avatar-circle {
+  border-radius: 50%;
+}
+
+.people-widget .avatar-square {
+  border-radius: 0;
+}
+
+/* 头像下文字 */
+.people-widget .portrait-title {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.people-widget .portrait-title h2 {
+  font-size: 1rem;
+  margin: 0.25rem 0;
+}
+
+.people-widget .portrait-title h3 {
+  font-size: 0.75rem;
+  margin: 0.15rem 0;
+  font-weight: normal;
+}
+
+/* 社交图标行 */
+.people-widget .social-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* 响应式调整 */
 @media (min-width: 576px) {
-  .people-widget .col-sm-auto {
-    width: 30%;
+  .people-widget .people-person {
+    max-width: 120px;
   }
 }
+
+@media (min-width: 768px) {
+  .people-widget .people-person {
+    max-width: 140px;
+  }
+}
+
 @media (min-width: 992px) {
-  .people-widget .col-sm-auto {
-    width: 20%;
+  .people-widget .people-person {
+    max-width: 150px;
   }
 }
