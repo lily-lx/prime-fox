@@ -3,9 +3,6 @@
  **************************************************/
 
 .people-widget {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   font-size: 0.8rem;
   text-align: center;
 }
@@ -23,11 +20,6 @@
   max-width: 150px;
   height: auto;
   border-radius: 50%;
-}
-
-.people-widget .col-sm-auto {
-  width: auto; /* 或最大宽度 */
-  max-width: 150px; /* 保证头像不太大 */
 }
 
 @media (min-width: 576px) {
