@@ -1,93 +1,131 @@
 /*************************************************
- *  People widget
+ *  People Widget (for Hugo Blox)
+ *  Author: ChatGPT (optimized for team layout)
  **************************************************/
 
 .people-widget {
-  font-size: 0.8rem;
-  text-align: center;       /* 默认文字居中 */
-  width: 100%;
-}
-
-/* 用户组标题 */
-.people-widget .user-group-row h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-/* 头像行容器 */
-.people-widget .user-group-row > .d-flex {
-  display: flex;
-  flex-wrap: wrap;          /* 自动换行 */
-  justify-content: center;  /* 居中排列 */
-  gap: 1rem;                /* 头像间距 */
-}
-
-/* 每个成员容器 */
-.people-widget .people-person {
   display: flex;
   flex-direction: column;
-  align-items: center;      /* 头像和文字居中 */
-  max-width: 150px;
-  margin-bottom: 1rem;
-}
-
-/* 头像样式 */
-.people-widget .avatar {
-  width: 100%;
-  max-width: 150px;
-  height: auto;
-  border-radius: 50%;
-}
-
-/* 头像形状控制 */
-.people-widget .avatar-circle {
-  border-radius: 50%;
-}
-
-.people-widget .avatar-square {
-  border-radius: 0;
-}
-
-/* 头像下文字 */
-.people-widget .portrait-title {
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
-.people-widget .portrait-title h2 {
-  font-size: 1rem;
-  margin: 0.25rem 0;
-}
-
-.people-widget .portrait-title h3 {
-  font-size: 0.75rem;
-  margin: 0.15rem 0;
-  font-weight: normal;
-}
-
-/* 社交图标行 */
-.people-widget .social-links {
-  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
-/* 响应式调整 */
-@media (min-width: 576px) {
-  .people-widget .people-person {
-    max-width: 120px;
+/* Section title (“Meet the Team”) */
+.people-widget .section-heading h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Subtitle (if any) */
+.people-widget .section-heading p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* User group (Researchers / Visitors) */
+.user-group-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+/* Group title */
+.user-group-row h2 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Container for people (flex layout) */
+.user-group-row .d-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem; /* space between people */
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Each person block */
+.people-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 180px;
+}
+
+/* Avatar styles */
+.avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0.8rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Avatar hover effect */
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Name and role */
+.portrait-title h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.3rem 0;
+  text-align: center;
+}
+
+.portrait-title h3 {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #444;
+  margin: 0.2rem 0;
+  text-align: center;
+}
+
+/* Interests (if displayed) */
+.people-interests {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .people-person {
+    width: 45%;
+  }
+  .avatar {
+    width: 130px;
+    height: 130px;
   }
 }
 
-@media (min-width: 768px) {
-  .people-widget .people-person {
-    max-width: 140px;
+@media (max-width: 576px) {
+  .people-person {
+    width: 100%;
   }
-}
-
-@media (min-width: 992px) {
-  .people-widget .people-person {
-    max-width: 150px;
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+  .user-group-row h2 {
+    font-size: 1.2rem;
+  }
+  .portrait-title h2 {
+    font-size: 0.95rem;
   }
 }
