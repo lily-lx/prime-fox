@@ -9,10 +9,12 @@
 
 .people-widget .portrait-title h2 {
   font-size: 1rem;
+  text-align: center;
 }
 
 .people-widget .portrait-title h3 {
   font-size: 0.7rem;
+  text-align: center;
 }
 
 .people-widget .avatar {
