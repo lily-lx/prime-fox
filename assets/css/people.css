@@ -22,12 +22,6 @@
   border-radius: 50%;
 }
 
-.people-widget .people-person {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 @media (min-width: 576px) {
   .people-widget .col-sm-auto {
     width: 30%;
