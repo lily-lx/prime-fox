@@ -72,7 +72,7 @@ user_groups:
   - 课题组负责人
   - Students
 
-cv: "/uploads/cv.pdf"
+cv: "uploads/cv.pdf"
 
 ---
 
