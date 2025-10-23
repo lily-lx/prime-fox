@@ -129,3 +129,24 @@
     font-size: 0.95rem;
   }
 }
+/* ===========================
+   CV Download Link
+=========================== */
+.cv-link {
+  margin-top: 0.5rem;
+}
+
+.cv-link a {
+  display: inline-block;
+  color: #007bff;  /* 蓝色 */
+  text-decoration: underline;
+  font-size: 0.85rem;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.cv-link a:hover {
+  color: #0056b3;  /* 深蓝色 */
+  text-decoration: none;
+}
+
+
