@@ -15,7 +15,7 @@ sections:
           - 课题组负责人
           - Grad Students
           - Administration
-          - Students
+          - 2025级学生
           - Alumni
       sort_by: Params.last_name
       sort_ascending: true
