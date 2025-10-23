@@ -69,6 +69,11 @@
                 {{ if and $show_role .Params.role }}<h3>{{ .Params.role | markdownify | emojify }}</h3>{{ end }}
                 {{ if $show_social }}{{ partial "social_links" . }}{{ end }}
                 {{ if and $show_interests .Params.interests }}<p class="people-interests">{{ delimit .Params.interests ", " | markdownify | emojify }}</p>{{ end }}
+                {{ if .Params.cv }}
+  <div class="cv-link">
+    <a href="{{ .Params.cv }}" target="_blank">📄 Download CV</a>
+  </div>
+{{ end }}
               </div>
             </div>
           {{ end }}
