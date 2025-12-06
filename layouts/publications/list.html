@@ -1,126 +1,442 @@
 {{- define "main" -}}
 
-{{/* 页面头部 */}}
-<div class="container-fluid docs">
-  <div class="row flex-xl-nowrap">
-    
-    {{/* 左侧筛选栏 - 占 1/4 */}}
-    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
-      {{ partial "publications/filters" . }}
+<div class="container">
+  {{/* 页面标题 */}}
+  <div class="publications-header">
+    <h1>{{ .Title }}</h1>
+    <div class="publication-stats">
+      <span class="stat-badge">{{ len .Pages }} publications</span>
+      <span class="stat-badge" id="filtered-count">{{ len .Pages }} shown</span>
     </div>
-    
-    {{/* 右侧内容 - 占 3/4 */}}
-    <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12">
-      <div class="publications-header">
-        <h1>{{ .Title }}</h1>
-        <div class="publication-stats">
-          <span class="stat-badge">{{ len .Pages }} publications</span>
-          <span class="stat-badge" id="filtered-count">{{ len .Pages }} shown</span>
-        </div>
-      </div>
+  </div>
+  
+  {{/* 顶部筛选栏 */}}
+  <div class="publications-filters">
+    <div class="filter-row">
+      {{/* 年份筛选 */}}
+      {{ $years := slice }}
+      {{ range .Pages }}
+        {{ if .Date }}
+          {{ $years = $years | append (.Date.Format "2006") }}
+        {{ end }}
+      {{ end }}
+      {{ $years = $years | uniq | sort | reverse }}
       
-      {{/* 论文列表 */}}
-      <div id="publications-container">
-        {{ range .Pages.ByDate.Reverse }}
-        <div class="publication-card" 
-             data-year="{{ .Date.Format "2006" }}"
-             data-type="{{ with .Params.publication_types }}{{ index . 0 }}{{ end }}"
-             data-tags="{{ with .Params.tags }}{{ delimit . " " }}{{ end }}">
-          
-          {{/* 顶部徽章 */}}
-          <div class="publication-badges">
-            {{ with .Params.publication_types }}
-              {{ if eq (index . 0) "1" }}
-              <span class="badge badge-conference">Conference</span>
-              {{ else if eq (index . 0) "2" }}
-              <span class="badge badge-journal">Journal</span>
-              {{ end }}
-            {{ end }}
-            
-            {{ with .Params.publication_short }}
-            <span class="badge badge-venue">{{ . }}</span>
-            {{ end }}
-            
-            {{ with .Params.featured }}
-            <span class="badge badge-featured">⭐ Featured</span>
-            {{ end }}
-          </div>
-          
-          {{/* 标题 */}}
-          <h3 class="publication-title">
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          </h3>
-          
-          {{/* 作者 - 突出显示你自己 */}}
-          <div class="publication-authors">
-            {{ $authors := .Params.authors }}
-            {{ range $index, $author := $authors }}
-              {{ if eq $author "Lingxi Xie" }}
-                <span class="author-self">{{ $author }}</span>
-              {{ else }}
-                <span class="author-other">{{ $author }}</span>
-              {{ end }}
-              {{ if ne (add $index 1) (len $authors) }}, {{ end }}
-            {{ end }}
-          </div>
-          
-          {{/* 会议/期刊信息 */}}
-          <div class="publication-venue">
-            {{ with .Params.publication }}
-            {{ . }}
-            {{ end }}
-            
-            {{ with .Date }}
-            <span class="publication-year">{{ .Format "2006" }}</span>
-            {{ end }}
-          </div>
-          
-          {{/* 链接按钮 */}}
-          <div class="publication-links">
-            {{ with .Params.url_pdf }}
-            <a href="{{ . }}" class="link-btn" target="_blank" title="PDF">
-              <i class="fas fa-file-pdf"></i> PDF
-            </a>
-            {{ end }}
-            
-            {{ with .Params.url_code }}
-            <a href="{{ . }}" class="link-btn" target="_blank" title="Code">
-              <i class="fas fa-code"></i> Code
-            </a>
-            {{ end }}
-            
-            {{ with .Params.doi }}
-            <a href="https://doi.org/{{ . }}" class="link-btn" target="_blank" title="DOI">
-              <i class="fas fa-external-link-alt"></i> DOI
-            </a>
-            {{ end }}
-            
-            {{ with .Params.url_video }}
-            <a href="{{ . }}" class="link-btn" target="_blank" title="Video">
-              <i class="fas fa-video"></i> Video
-            </a>
-            {{ end }}
-            
-            <button class="link-btn btn-bibtex" onclick="copyBibtex(this)" data-title="{{ .Title }}" data-authors="{{ delimit .Params.authors " and " }}" data-venue="{{ .Params.publication }}" data-year="{{ .Date.Format "2006" }}" data-doi="{{ .Params.doi }}">
-              <i class="fas fa-quote-right"></i> BibTeX
-            </button>
-          </div>
-          
-        </div>
+      <div class="filter-group">
+        <span class="filter-label">Year:</span>
+        <button class="filter-btn active" data-year="all">All</button>
+        {{ range $years }}
+        <button class="filter-btn" data-year="{{ . }}">{{ . }}</button>
         {{ end }}
       </div>
+      
+      {{/* 类型筛选 */}}
+      <div class="filter-group">
+        <span class="filter-label">Type:</span>
+        <button class="filter-btn active" data-type="all">All</button>
+        <button class="filter-btn" data-type="1">Conference</button>
+        <button class="filter-btn" data-type="2">Journal</button>
+      </div>
     </div>
     
+    {{/* 搜索框 */}}
+    <div class="search-box">
+      <input type="text" id="publication-search" class="search-input" placeholder="Search publications...">
+      <button id="clear-filters" class="btn-clear">Clear All</button>
+    </div>
+  </div>
+  
+  {{/* 论文列表 */}}
+  <div id="publications-container">
+    {{ range .Pages.ByDate.Reverse }}
+    <div class="publication-card" 
+         data-year="{{ .Date.Format "2006" }}"
+         data-type="{{ with .Params.publication_types }}{{ index . 0 }}{{ end }}">
+      
+      {{/* 徽章 */}}
+      <div class="publication-badges">
+        {{ with .Params.publication_types }}
+          {{ if eq (index . 0) "1" }}
+          <span class="badge badge-conference">Conference</span>
+          {{ else if eq (index . 0) "2" }}
+          <span class="badge badge-journal">Journal</span>
+          {{ end }}
+        {{ end }}
+        
+        {{ with .Params.publication_short }}
+        <span class="badge badge-venue">{{ . }}</span>
+        {{ end }}
+        
+        {{ with .Date }}
+        <span class="badge badge-year">{{ .Format "2006" }}</span>
+        {{ end }}
+      </div>
+      
+      {{/* 标题 */}}
+      <h3 class="publication-title">
+        {{ with .Params.url_pdf }}
+        <a href="{{ . }}" target="_blank">{{ $.Title }}</a>
+        {{ else }}
+        {{ .Title }}
+        {{ end }}
+      </h3>
+      
+      {{/* 作者 */}}
+      <div class="publication-authors">
+        {{ with .Params.authors }}
+          {{ range $index, $author := . }}
+            {{ if eq $author "Lingxi Xie" }}
+              <strong class="author-self">{{ $author }}</strong>
+            {{ else }}
+              <span class="author-other">{{ $author }}</span>
+            {{ end }}
+            {{ if ne (add $index 1) (len $) }}, {{ end }}
+          {{ end }}
+        {{ end }}
+      </div>
+      
+      {{/* 会议/期刊信息 */}}
+      <div class="publication-venue">
+        {{ with .Params.publication }}
+        {{ . }}
+        {{ end }}
+      </div>
+      
+      {{/* 链接 */}}
+      <div class="publication-links">
+        {{ with .Params.url_pdf }}
+        <a href="{{ . }}" class="link-btn" target="_blank">
+          <i class="fas fa-file-pdf"></i> PDF
+        </a>
+        {{ end }}
+        
+        {{ with .Params.doi }}
+        <a href="https://doi.org/{{ . }}" class="link-btn" target="_blank">
+          <i class="fas fa-external-link-alt"></i> DOI
+        </a>
+        {{ end }}
+        
+        {{ with .Params.url_code }}
+        <a href="{{ . }}" class="link-btn" target="_blank">
+          <i class="fas fa-code"></i> Code
+        </a>
+        {{ end }}
+      </div>
+      
+    </div>
+    {{ end }}
+  </div>
+  
+  {{/* 无结果提示 */}}
+  <div id="no-results-message" class="no-results" style="display: none;">
+    <h3>No publications found</h3>
+    <p>Try adjusting your filters or search terms.</p>
   </div>
 </div>
 
-{{/* BibTeX 模态框 */}}
-<div id="bibtex-modal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <pre id="bibtex-content"></pre>
-    <button class="btn-copy" onclick="copyToClipboard()">Copy to Clipboard</button>
-  </div>
-</div>
+{{/* 简单CSS样式 */}}
+<style>
+  .publications-header {
+    margin-bottom: 2rem;
+  }
+  
+  .publication-stats {
+    margin-top: 0.5rem;
+  }
+  
+  .stat-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: #f1f5f9;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+  
+  .publications-filters {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .filter-label {
+    font-weight: 600;
+    color: #475569;
+  }
+  
+  .filter-btn {
+    padding: 0.4rem 0.8rem;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .filter-btn:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+  
+  .filter-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+  }
+  
+  .search-box {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .btn-clear {
+    padding: 0.6rem 1rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-clear:hover {
+    background: #dc2626;
+  }
+  
+  .publication-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  
+  .publication-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border-color: #3b82f6;
+  }
+  
+  .publication-badges {
+    margin-bottom: 0.75rem;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+  
+  .badge-conference {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+  
+  .badge-journal {
+    background: #f0f9ff;
+    color: #0369a1;
+  }
+  
+  .badge-venue {
+    background: #f0fdf4;
+    color: #166534;
+  }
+  
+  .badge-year {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .publication-title {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+  }
+  
+  .publication-title a {
+    color: #1e293b;
+    text-decoration: none;
+  }
+  
+  .publication-title a:hover {
+    color: #3b82f6;
+  }
+  
+  .publication-authors {
+    margin: 0.5rem 0;
+    color: #475569;
+  }
+  
+  .author-self {
+    color: #dc2626;
+    font-weight: 600;
+  }
+  
+  .publication-venue {
+    margin: 0.5rem 0;
+    color: #64748b;
+    font-style: italic;
+  }
+  
+  .publication-links {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  .link-btn {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  
+  .link-btn:hover {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: #64748b;
+  }
+</style>
+
+{{/* 简化版JavaScript */}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.publication-card');
+  const searchInput = document.getElementById('publication-search');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const clearBtn = document.getElementById('clear-filters');
+  const noResults = document.getElementById('no-results-message');
+  
+  let activeYear = 'all';
+  let activeType = 'all';
+  let searchText = '';
+  
+  // 筛选按钮点击
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // 移除同组active
+      if (this.dataset.year) {
+        document.querySelectorAll('[data-year]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeYear = this.dataset.year;
+      }
+      
+      if (this.dataset.type) {
+        document.querySelectorAll('[data-type]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeType = this.dataset.type;
+      }
+      
+      filterPublications();
+    });
+  });
+  
+  // 搜索
+  searchInput.addEventListener('input', function() {
+    searchText = this.value.toLowerCase();
+    filterPublications();
+  });
+  
+  // 清除筛选
+  clearBtn.addEventListener('click', function() {
+    activeYear = 'all';
+    activeType = 'all';
+    searchText = '';
+    searchInput.value = '';
+    
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.year === 'all' || btn.dataset.type === 'all') {
+        btn.classList.add('active');
+      }
+    });
+    
+    filterPublications();
+  });
+  
+  // 筛选函数
+  function filterPublications() {
+    let visibleCount = 0;
+    
+    cards.forEach(card => {
+      const year = card.dataset.year;
+      const type = card.dataset.type;
+      const title = card.querySelector('.publication-title').textContent.toLowerCase();
+      const authors = card.querySelector('.publication-authors').textContent.toLowerCase();
+      const venue = card.querySelector('.publication-venue').textContent.toLowerCase();
+      
+      const yearMatch = activeYear === 'all' || activeYear === year;
+      const typeMatch = activeType === 'all' || activeType === type;
+      const searchMatch = !searchText || 
+        title.includes(searchText) || 
+        authors.includes(searchText) || 
+        venue.includes(searchText);
+      
+      if (yearMatch && typeMatch && searchMatch) {
+        card.style.display = 'block';
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 10);
+        visibleCount++;
+      } else {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        setTimeout(() => {
+          card.style.display = 'none';
+        }, 300);
+      }
+    });
+    
+    // 更新计数
+    document.getElementById('filtered-count').textContent = `${visibleCount} shown`;
+    
+    // 显示/隐藏无结果提示
+    if (visibleCount === 0) {
+      noResults.style.display = 'block';
+    } else {
+      noResults.style.display = 'none';
+    }
+  }
+});
+</script>
 
 {{- end -}}
