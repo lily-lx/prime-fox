@@ -1,0 +1,42 @@
+{{ define "main" }}
+<section>
+  <div class="pub-list">
+
+    {{ $pubs := where .Pages "Type" "publication" }}
+    {{ range $year, $items := $pubs.GroupByPublishDate "2006" }}
+      <h2 style="margin-top: 35px; font-weight: 700; font-size: 32px;">{{ $year }}</h2>
+      <hr/>
+
+      <ul class="pub-year-group" style="list-style-type:none; padding-left:0;">
+        {{ range $items }}
+          <li style="margin-bottom: 14px; line-height:1.45;">
+            <!-- Authors -->
+            <span>{{ .Params.authors | delimit ", " }}</span>
+
+            <!-- Title with link -->
+            <span> — <a href="{{ .RelPermalink }}" style="font-weight:600; text-decoration:none; color:#005BBB;">
+              {{ .Params.title }}
+            </a></span>
+
+            <!-- Publication -->
+            {{ with .Params.publication }}<span>, <i>{{ . }}</i></span>{{ end }}
+
+            <!-- Year -->
+            {{ with .Date }}<span> ({{ .Format "2006" }})</span>{{ end }}
+
+            <!-- Links -->
+            <span style="margin-left:6px;">
+              {{ if .Params.url_pdf }}<a href="{{ .Params.url_pdf }}" target="_blank">[PDF]</a>{{ end }}
+              {{ if .Params.url_code }}<a href="{{ .Params.url_code }}" target="_blank">[Code]</a>{{ end }}
+              {{ if .Params.url_slides }}<a href="{{ .Params.url_slides }}" target="_blank">[Slides]</a>{{ end }}
+              {{ if .Params.url_video }}<a href="{{ .Params.url_video }}" target="_blank">[Video]</a>{{ end }}
+              {{ if .Params.doi }}<a href="https://doi.org/{{ .Params.doi }}" target="_blank">[DOI]</a>{{ end }}
+            </span>
+          </li>
+        {{ end }}
+      </ul>
+
+    {{ end }}
+  </div>
+</section>
+{{ end }}
