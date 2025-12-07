@@ -76,8 +76,8 @@
       
       {{/* 标题 */}}
       <h3 class="publication-title">
-  {{ if .Params.url }}
-    <a href="{{ .Params.url }}" target="_blank" rel="noopener">{{ .Title }}</a>
+  {{ if .Params.link }}
+    <a href="{{ .Params.link }}" target="_blank" rel="noopener">{{ .Title }}</a>
   {{ else }}
     {{ .Title }}
   {{ end }}
