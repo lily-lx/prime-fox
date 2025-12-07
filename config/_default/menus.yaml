@@ -31,3 +31,6 @@ main:
   - name: Publications
     url: publications/
     weight: 50
+  - name: Photos
+    url: photos/
+    weight: 60
