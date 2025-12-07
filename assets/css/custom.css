@@ -1,0 +1,31 @@
+.masonry-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.masonry-item img,
+.masonry-item iframe {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.masonry-item:hover img {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+/* Optional: make video items full width */
+.masonry-item.video-item {
+  grid-column: span 2;  /* 让视频跨两列，更醒目 */
+}
+
+@media (max-width: 600px) {
+  .masonry-item.video-item {
+    grid-column: span 1;
+  }
+}
