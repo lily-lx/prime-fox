@@ -1,29 +1,18 @@
 ---
-title: "Gallery"
-subtitle: "Our Lab Life & Projects"
-view: none   # 我们自定义布局，不用 Hugo 内建列表视图
+title: "Photos"
+subtitle: "Capturing moments from our research journey"
+summary: "A visual collection of our team activities, research projects, and memorable events"
+date: 2024-01-01
+type: page
+
+# Gallery settings
+featured_images:
+  - src: "group-photo-2024.jpg"
+    caption: "Full research group photo, 2024"
+  - src: "lab-experiment.jpg"
+    caption: "Conducting experiments in the lab"
+  - src: "conference-presentation.jpg"
+    caption: "Presenting at international conference"
+
+categories: ["All", "Team", "Research", "Events", "Conferences", "Outreach"]
 ---
-
-<div class="masonry-gallery">
-
-  <!-- 图片项 -->
-  <div class="masonry-item">
-    <a href="/media/lab1-full.jpg" target="_blank">
-      <img src="/media/lab1-thumb.jpg" alt="Lab 1">
-    </a>
-  </div>
-  <div class="masonry-item">
-    <a href="/media/lab2-full.jpg" target="_blank">
-      <img src="/media/lab2-thumb.jpg" alt="Lab 2">
-    </a>
-  </div>
-
-  <!-- ...更多图片... -->
-
-  <!-- 视频项 -->
-  <div class="masonry-item video-item">
-    <iframe src="https://www.youtube.com/embed/VIDEO_ID"
-      frameborder="0" allowfullscreen></iframe>
-  </div>
-
-</div>
