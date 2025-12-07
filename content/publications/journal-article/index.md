@@ -1,8 +1,7 @@
 ---
-title: "An example journal article"
+title: "Multi-scenario robust stochastic programming based distributed energy resources allocation in distribution networks: Balancing economic efficiency and resilience"
 authors:
-- admin
-- Robert Ford
+- Xin Liu
 author_notes:
 - "Equal contribution"
 - "Equal contribution"
