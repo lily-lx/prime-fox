@@ -76,15 +76,12 @@
       
       {{/* 标题 */}}
       <h3 class="publication-title">
-        {{ if .Params.url_pdf }}
-        <a href="{{ .Params.url_pdf }}" target="_blank">{{ .Title }}</a>
-        {{ else if .Params.doi }}
-        <a href="https://doi.org/{{ .Params.doi }}" target="_blank">{{ .Title }}</a>
-        {{ else }}
-        {{ .Title }}
-        {{ end }}
-      </h3>
-      
+  {{ if .Params.url }}
+    <a href="{{ .Params.url }}" target="_blank" rel="noopener">{{ .Title }}</a>
+  {{ else }}
+    {{ .Title }}
+  {{ end }}
+</h3>
       {{/* 作者 */}}
       <div class="publication-authors">
         {{ with .Params.authors }}
