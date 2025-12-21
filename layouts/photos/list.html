@@ -1,13 +1,47 @@
 {{ define "main" }}
 
-<h2>Group Photos</h2>
-{{ range .Pages.BySection "group" }}
-  {{ partial "photo-grid.html" . }}
-{{ end }}
+<div class="photos-page">
 
-<h2>Projects & Presentations</h2>
-{{ range .Pages.BySection "projects" }}
-  {{ partial "project-block.html" . }}
-{{ end }}
+  <!-- 页面标题 -->
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.subtitle }}
+      <p class="page-subtitle">{{ . }}</p>
+    {{ end }}
+  </header>
+
+  <!-- ============================= -->
+  <!-- ① Group Photos -->
+  <!-- ============================= -->
+  <section class="photos-section">
+    <h2>Group Photos</h2>
+
+    {{ $groups := where .Pages "Section" "group" }}
+    {{ if gt (len $groups) 0 }}
+      {{ range $groups }}
+        {{ partial "photo-grid.html" . }}
+      {{ end }}
+    {{ else }}
+      <p class="empty-hint">No group photos yet.</p>
+    {{ end }}
+  </section>
+
+  <!-- ============================= -->
+  <!-- ② Projects & Presentations -->
+  <!-- ============================= -->
+  <section class="projects-section">
+    <h2>Projects & Presentations</h2>
+
+    {{ $projects := where .Pages "Section" "projects" }}
+    {{ if gt (len $projects) 0 }}
+      {{ range $projects }}
+        {{ partial "project-block.html" . }}
+      {{ end }}
+    {{ else }}
+      <p class="empty-hint">No project videos yet.</p>
+    {{ end }}
+  </section>
+
+</div>
 
 {{ end }}
