@@ -1,0 +1,21 @@
+<div class="photo-group">
+
+  <!-- 分组标题 -->
+  <h3 class="photo-group-title">
+    {{ .Title }}
+  </h3>
+
+  {{ with .Params.description }}
+    <p class="photo-group-desc">{{ . }}</p>
+  {{ end }}
+
+  <!-- 图片网格 -->
+  <div class="photo-grid">
+    {{ range .Resources.Match "*.{jpg,jpeg,png,webp}" }}
+      <figure class="photo-item">
+        <img src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+      </figure>
+    {{ end }}
+  </div>
+
+</div>
