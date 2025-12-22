@@ -1,0 +1,15 @@
+<div class="photo-album">
+
+  <!-- 相册标题 -->
+  <h3 class="photo-album-title">{{ .Title }}</h3>
+
+  <!-- 图片网格 -->
+  <div class="photo-grid">
+    {{ range .Resources.ByType "image" }}
+      <figure class="photo-item">
+        <img src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+      </figure>
+    {{ end }}
+  </div>
+
+</div>
