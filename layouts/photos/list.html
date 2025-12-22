@@ -1,60 +1,49 @@
 {{ define "main" }}
 
-<section class="photos-page">
+<div class="photos-page">
 
-  <h1>{{ .Title }}</h1>
+  <!-- 页面标题 -->
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.description }}
+      <p class="page-description">{{ . }}</p>
+    {{ end }}
+  </header>
 
-  <!-- ================= Group Photos ================= -->
-  <section class="group-photos">
+  <!-- ========================= -->
+  <!-- ① Group Photos（照片相册） -->
+  <!-- ========================= -->
+  <section class="photos-section">
     <h2>Group Photos</h2>
 
-    {{ $group := .Site.GetPage "photos/group" }}
+    {{ $groups := where .Site.RegularPages "Section" "photos/group" }}
 
-    {{ if $group }}
-      {{ range $group.Pages }}
-        <div class="group-block">
-          <h3>{{ .Title }}</h3>
-
-          <div class="photo-grid">
-            {{ range .Resources.Match "*.jpg" }}
-              <a href="{{ .RelPermalink }}" data-lightbox="group">
-                <img src="{{ .RelPermalink }}" alt="">
-              </a>
-            {{ end }}
-          </div>
-        </div>
+    {{ if gt (len $groups) 0 }}
+      {{ range $groups }}
+        {{ partial "photo-grid.html" . }}
       {{ end }}
+    {{ else }}
+      <p class="empty-hint">No group photos yet.</p>
     {{ end }}
-
   </section>
 
-  <!-- ================= Projects & Presentations ================= -->
-  <section class="projects-media">
-    <h2>Projects & Presentations</h2>
+  <!-- ================================= -->
+  <!-- ② Projects & Presentations（视频） -->
+  <!-- ================================= -->
+  <section class="projects-section">
+    <h2>Projects &amp; Presentations</h2>
 
-    {{ $projects := .Site.GetPage "photos/projects" }}
+    {{ $projects := where .Site.RegularPages "Section" "photos/projects" }}
 
-    {{ if $projects }}
-      {{ range $projects.Pages }}
-
-        {{ $img := index (.Resources.Match "*.jpg") 0 }}
-
-        <div class="project-card">
-          {{ if $img }}
-            <img src="{{ $img.RelPermalink }}" alt="">
-          {{ end }}
-
-          <div class="project-info">
-            <h3>{{ .Title }}</h3>
-            {{ .Content }}
-          </div>
-        </div>
-
+    {{ if gt (len $projects) 0 }}
+      {{ range $projects }}
+        {{ partial "project-block.html" . }}
       {{ end }}
+    {{ else }}
+      <p class="empty-hint">No project videos yet.</p>
     {{ end }}
-
   </section>
 
-</section>
+</div>
 
 {{ end }}
