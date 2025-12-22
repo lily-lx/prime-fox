@@ -1,5 +1,3 @@
 ---
-title: "Group Photos"
-type: photos
-kind: page
+title: "Group Photos 2024"
 ---
