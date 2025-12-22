@@ -14,15 +14,19 @@
   <section class="photos-section">
     <h2>Group Photos</h2>
 
-    {{ $groupPages := where .Site.RegularPages "Section" "photos" }}
-    {{ $groupPages = where $groupPages "Dir" "like" "photos/group" }}
+    {{ $groupSection := .Site.GetPage "section" "photos/group" }}
     
-    {{ if gt (len $groupPages) 0 }}
-      {{ range $groupPages }}
-        {{ partial "photo-grid.html" . }}
+    {{ if $groupSection }}
+      {{ $groupPages := $groupSection.Pages }}
+      {{ if gt (len $groupPages) 0 }}
+        {{ range $groupPages }}
+          {{ partial "photo-grid.html" . }}
+        {{ end }}
+      {{ else }}
+        <p class="empty-hint">No group photos yet.</p>
       {{ end }}
     {{ else }}
-      <p class="empty-hint">No group photos yet.</p>
+      <p class="empty-hint">Group photos section not found.</p>
     {{ end }}
   </section>
 
@@ -32,15 +36,19 @@
   <section class="projects-section">
     <h2>Projects &amp; Presentations</h2>
 
-    {{ $projectPages := where .Site.RegularPages "Section" "photos" }}
-    {{ $projectPages = where $projectPages "Dir" "like" "photos/projects" }}
+    {{ $projectSection := .Site.GetPage "section" "photos/projects" }}
     
-    {{ if gt (len $projectPages) 0 }}
-      {{ range $projectPages }}
-        {{ partial "project-block.html" . }}
+    {{ if $projectSection }}
+      {{ $projectPages := $projectSection.Pages }}
+      {{ if gt (len $projectPages) 0 }}
+        {{ range $projectPages }}
+          {{ partial "project-block.html" . }}
+        {{ end }}
+      {{ else }}
+        <p class="empty-hint">No project videos yet.</p>
       {{ end }}
     {{ else }}
-      <p class="empty-hint">No project videos yet.</p>
+      <p class="empty-hint">Projects section not found.</p>
     {{ end }}
   </section>
 
