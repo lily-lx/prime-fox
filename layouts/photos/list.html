@@ -1,24 +1,60 @@
 {{ define "main" }}
 
-<h1>{{ .Title }}</h1>
+<div class="photos-page">
 
-<h2>DEBUG GROUP PHOTOS</h2>
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+  </header>
 
-{{ range .Site.RegularPages }}
-  {{ if eq .File.Path "photos/group/group2024/index.md" }}
+  <!-- ================= Group Photos ================= -->
+  <section class="photos-section">
+    <h2>Group Photos</h2>
 
-    <h3>{{ .Title }}</h3>
+    {{ $groups := where .Site.RegularPages "File.Dir" "photos/group/" }}
 
-    <ul>
-    {{ range .Resources.ByType "image" }}
-      <li>
-        <p>{{ .Name }}</p>
-        <img src="{{ .RelPermalink }}" style="max-width:400px;border:2px solid red;">
-      </li>
+    {{ if gt (len $groups) 0 }}
+      {{ range $groups }}
+        <h3>{{ .Title }}</h3>
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;">
+          {{ range .Resources.ByType "image" }}
+            <img
+              src="{{ .RelPermalink }}"
+              style="max-width:260px;border-radius:6px;">
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ else }}
+      <p>No group photos yet.</p>
     {{ end }}
-    </ul>
+  </section>
 
-  {{ end }}
-{{ end }}
+  <!-- ================= Projects & Presentations ================= -->
+  <section class="projects-section" style="margin-top:48px;">
+    <h2>Projects &amp; Presentations</h2>
+
+    {{ $projects := where .Site.RegularPages "File.Dir" "photos/projects/" }}
+
+    {{ if gt (len $projects) 0 }}
+      {{ range $projects }}
+        <h3>{{ .Title }}</h3>
+
+        {{ with .Params.video }}
+          <iframe
+            src="{{ . }}"
+            width="560"
+            height="315"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+        {{ end }}
+
+      {{ end }}
+    {{ else }}
+      <p>No project videos yet.</p>
+    {{ end }}
+  </section>
+
+</div>
 
 {{ end }}
