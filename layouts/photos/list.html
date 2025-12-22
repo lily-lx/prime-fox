@@ -1,8 +1,6 @@
 {{ define "main" }}
 
 <div class="photos-page">
-
-  <!-- 页面标题 -->
   <header class="page-header">
     <h1>{{ .Title }}</h1>
     {{ with .Params.description }}
@@ -16,10 +14,11 @@
   <section class="photos-section">
     <h2>Group Photos</h2>
 
-    {{ $groups := where .Site.RegularPages "Section" "photos/group" }}
-
-    {{ if gt (len $groups) 0 }}
-      {{ range $groups }}
+    {{ $groupPages := where .Site.RegularPages "Section" "photos" }}
+    {{ $groupPages = where $groupPages "Dir" "like" "photos/group" }}
+    
+    {{ if gt (len $groupPages) 0 }}
+      {{ range $groupPages }}
         {{ partial "photo-grid.html" . }}
       {{ end }}
     {{ else }}
@@ -33,10 +32,11 @@
   <section class="projects-section">
     <h2>Projects &amp; Presentations</h2>
 
-    {{ $projects := where .Site.RegularPages "Section" "photos/projects" }}
-
-    {{ if gt (len $projects) 0 }}
-      {{ range $projects }}
+    {{ $projectPages := where .Site.RegularPages "Section" "photos" }}
+    {{ $projectPages = where $projectPages "Dir" "like" "photos/projects" }}
+    
+    {{ if gt (len $projectPages) 0 }}
+      {{ range $projectPages }}
         {{ partial "project-block.html" . }}
       {{ end }}
     {{ else }}
