@@ -1,20 +1,13 @@
-<div class="photo-album">
+<div class="photo-group">
 
-  <!-- 相册标题 -->
-  <h3 class="album-title">{{ .Title }}</h3>
+  <h3 class="photo-group-title">
+    {{ .Title }}
+  </h3>
 
-  <!-- 图片网格 -->
   <div class="photo-grid">
     {{ range .Resources.ByType "image" }}
       <figure class="photo-item">
-        <img
-          src="{{ .RelPermalink }}"
-          alt="{{ $.Title }}"
-          loading="lazy"
-        >
-        {{ with .Params.caption }}
-          <figcaption>{{ . }}</figcaption>
-        {{ end }}
+        <img src="{{ .RelPermalink }}" alt="">
       </figure>
     {{ end }}
   </div>
