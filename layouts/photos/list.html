@@ -19,27 +19,20 @@
   </header>
 
   <!-- ================= Group Photos ================= -->
-  <section class="photos-section">
-    <h2>Group Photos</h2>
+<section class="photos-section">
+  <h2>Group Photos</h2>
 
-    {{ $groups := where .Site.RegularPages "File.Dir" "photos/group/" }}
+  {{ $groups := where .Site.RegularPages "File.Path" "hasPrefix" "photos/group/" }}
 
-    {{ if gt (len $groups) 0 }}
-      {{ range $groups }}
-        <h3>{{ .Title }}</h3>
-
-        <div style="display:flex;flex-wrap:wrap;gap:16px;">
-          {{ range .Resources.ByType "image" }}
-            <img
-              src="{{ .RelPermalink }}"
-              style="max-width:260px;border-radius:6px;">
-          {{ end }}
-        </div>
-      {{ end }}
-    {{ else }}
-      <p>No group photos yet.</p>
+  {{ if gt (len $groups) 0 }}
+    {{ range $groups }}
+      {{ partial "photo-grid.html" . }}
     {{ end }}
-  </section>
+  {{ else }}
+    <p class="empty-hint">No group photos yet.</p>
+  {{ end }}
+</section>
+
 
   <!-- ================= Projects & Presentations ================= -->
   <section class="projects-section" style="margin-top:48px;">
