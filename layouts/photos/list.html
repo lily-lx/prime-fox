@@ -1,64 +1,65 @@
 {{ define "main" }}
-<p>DEBUG: {{ len .Site.RegularPages }}</p>
-<ul style="font-size:12px;color:#555;">
-{{ range .Site.RegularPages }}
-  <li>
-    {{ .File.Path }} |
-    Section={{ .Section }} |
-    Type={{ .Type }}
-  </li>
-{{ end }}
-</ul>
 
 <div class="photos-page">
+
+  <!-- 页面标题 -->
   <header class="page-header">
     <h1>{{ .Title }}</h1>
-    {{ with .Params.description }}
-      <p class="page-description">{{ . }}</p>
-    {{ end }}
   </header>
 
   <!-- ========================= -->
-  <!-- ① Group Photos（照片相册） -->
+  <!-- ① Group Photos -->
   <!-- ========================= -->
   <section class="photos-section">
     <h2>Group Photos</h2>
 
-    {{ $groupSection := .Site.GetPage "section" "photos/group" }}
-    
-    {{ if $groupSection }}
-      {{ $groupPages := $groupSection.Pages }}
-      {{ if gt (len $groupPages) 0 }}
-        {{ range $groupPages }}
-          {{ partial "photo-grid.html" . }}
-        {{ end }}
-      {{ else }}
-        <p class="empty-hint">No group photos yet.</p>
+    {{ $groups := where .Site.RegularPages "Section" "photos" }}
+    {{ $groups = where $groups "File.Dir" "in" "photos/group/" }}
+
+    {{ if gt (len $groups) 0 }}
+      {{ range $groups }}
+        <div class="photo-group">
+          <h3>{{ .Title }}</h3>
+
+          {{ with .Resources.ByType "image" }}
+          <div class="photo-grid">
+            {{ range . }}
+              <img src="{{ .RelPermalink }}" alt="">
+            {{ end }}
+          </div>
+          {{ end }}
+
+        </div>
       {{ end }}
     {{ else }}
-      <p class="empty-hint">Group photos section not found.</p>
+      <p class="empty-hint">No group photos yet.</p>
     {{ end }}
   </section>
 
-  <!-- ================================= -->
-  <!-- ② Projects & Presentations（视频） -->
-  <!-- ================================= -->
+  <!-- ========================= -->
+  <!-- ② Projects & Videos -->
+  <!-- ========================= -->
   <section class="projects-section">
     <h2>Projects &amp; Presentations</h2>
 
-    {{ $projectSection := .Site.GetPage "section" "photos/projects" }}
-    
-    {{ if $projectSection }}
-      {{ $projectPages := $projectSection.Pages }}
-      {{ if gt (len $projectPages) 0 }}
-        {{ range $projectPages }}
-          {{ partial "project-block.html" . }}
-        {{ end }}
-      {{ else }}
-        <p class="empty-hint">No project videos yet.</p>
+    {{ $projects := where .Site.RegularPages "Section" "photos" }}
+    {{ $projects = where $projects "File.Dir" "in" "photos/projects/" }}
+
+    {{ if gt (len $projects) 0 }}
+      {{ range $projects }}
+        <div class="project-block">
+          <h3>{{ .Title }}</h3>
+
+          {{ with .Params.video }}
+            <div class="video-wrapper">
+              {{ . | safeHTML }}
+            </div>
+          {{ end }}
+
+        </div>
       {{ end }}
     {{ else }}
-      <p class="empty-hint">Projects section not found.</p>
+      <p class="empty-hint">No project videos yet.</p>
     {{ end }}
   </section>
 
