@@ -1,0 +1,28 @@
+<div class="project-block">
+
+  <h3 class="project-title">{{ .Title }}</h3>
+
+  <div class="project-media">
+
+    {{ if eq .Params.platform "bilibili" }}
+      <iframe
+        src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}&page=1"
+        scrolling="no"
+        frameborder="0"
+        allowfullscreen="true">
+      </iframe>
+
+    {{ else if eq .Params.platform "youtube" }}
+      <iframe
+        src="https://www.youtube.com/embed/{{ .Params.video_id }}"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+    {{ else }}
+      <p class="empty-hint">Unsupported video platform.</p>
+    {{ end }}
+
+  </div>
+
+</div>
