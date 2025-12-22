@@ -1,16 +1,4 @@
 {{ define "main" }}
-<h2>DEBUG: Resources</h2>
-
-{{ range .Site.RegularPages }}
-  {{ if eq .File.Path "photos/group/group2024/index.md" }}
-    <p>Found group2024 page</p>
-    <p>Resources count: {{ len .Resources }}</p>
-
-    {{ range .Resources }}
-      <p>→ {{ .Name }} ({{ .MediaType }})</p>
-    {{ end }}
-  {{ end }}
-{{ end }}
 
 <div class="photos-page">
 
