@@ -1,6 +1,5 @@
 ---
-title: "Lab Life"
-headless: true
+title: "Group Photos"
+type: photos
+kind: page
 ---
-
-Snapshots of daily experiments and teamwork in the lab.
