@@ -1,4 +1,6 @@
 ---
-title: "课题组合照 · 2024"
-date: 2024-06-01
+title: "Lab Life"
+headless: true
 ---
+
+Snapshots of daily experiments and teamwork in the lab.
