@@ -1,48 +1,60 @@
 {{ define "main" }}
 
-<h1>{{ .Title }}</h1>
+<section class="photos-page">
 
-<!-- ================= Group Photos ================= -->
-<section>
-  <h2>Group Photos</h2>
+  <h1>{{ .Title }}</h1>
 
-  {{ range where site.Pages "Params.headless" true }}
-    {{ if hasPrefix .File.Dir "photos/group" }}
+  <!-- ================= Group Photos ================= -->
+  <section class="group-photos">
+    <h2>Group Photos</h2>
 
-      <h3>{{ .Title }}</h3>
-      <div class="photo-grid">
-        {{ range .Params.photos }}
-          {{ $img := printf "%s/%s" $.RelPermalink .image }}
-          <img src="{{ $img }}" alt="{{ .caption }}">
-        {{ end }}
-      </div>
+    {{ $group := .Site.GetPage "photos/group" }}
 
-    {{ end }}
-  {{ end }}
-</section>
+    {{ if $group }}
+      {{ range $group.Pages }}
+        <div class="group-block">
+          <h3>{{ .Title }}</h3>
 
-<!-- ================= Projects ================= -->
-<section>
-  <h2>Projects & Presentations</h2>
-
-  {{ range where site.Pages "Params.headless" true }}
-    {{ if hasPrefix .File.Dir "photos/projects" }}
-
-      <div class="project-item">
-        {{ if .Params.image }}
-          <img src="{{ printf "%s/%s" $.RelPermalink .Params.image }}">
-        {{ else if .Params.video }}
-          <iframe src="{{ .Params.video }}" frameborder="0" allowfullscreen></iframe>
-        {{ end }}
-
-        <div class="project-desc">
-          <h4>{{ .Title }}</h4>
-          <p>{{ .Params.description }}</p>
+          <div class="photo-grid">
+            {{ range .Resources.Match "*.jpg" }}
+              <a href="{{ .RelPermalink }}" data-lightbox="group">
+                <img src="{{ .RelPermalink }}" alt="">
+              </a>
+            {{ end }}
+          </div>
         </div>
-      </div>
-
+      {{ end }}
     {{ end }}
-  {{ end }}
+
+  </section>
+
+  <!-- ================= Projects & Presentations ================= -->
+  <section class="projects-media">
+    <h2>Projects & Presentations</h2>
+
+    {{ $projects := .Site.GetPage "photos/projects" }}
+
+    {{ if $projects }}
+      {{ range $projects.Pages }}
+
+        {{ $img := index (.Resources.Match "*.jpg") 0 }}
+
+        <div class="project-card">
+          {{ if $img }}
+            <img src="{{ $img.RelPermalink }}" alt="">
+          {{ end }}
+
+          <div class="project-info">
+            <h3>{{ .Title }}</h3>
+            {{ .Content }}
+          </div>
+        </div>
+
+      {{ end }}
+    {{ end }}
+
+  </section>
+
 </section>
 
 {{ end }}
