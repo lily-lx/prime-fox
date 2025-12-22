@@ -1,68 +1,24 @@
 {{ define "main" }}
 
-<div class="photos-page">
+<h1>{{ .Title }}</h1>
 
-  <!-- 页面标题 -->
-  <header class="page-header">
-    <h1>{{ .Title }}</h1>
-  </header>
+<h2>DEBUG GROUP PHOTOS</h2>
 
-  <!-- ========================= -->
-  <!-- ① Group Photos -->
-  <!-- ========================= -->
-  <section class="photos-section">
-    <h2>Group Photos</h2>
+{{ range .Site.RegularPages }}
+  {{ if eq .File.Path "photos/group/group2024/index.md" }}
 
-    {{ $groups := where .Site.RegularPages "Section" "photos" }}
-    {{ $groups = where $groups "File.Dir" "in" "photos/group/" }}
+    <h3>{{ .Title }}</h3>
 
-    {{ if gt (len $groups) 0 }}
-      {{ range $groups }}
-        <div class="photo-group">
-          <h3>{{ .Title }}</h3>
-
-          {{ with .Resources.ByType "image" }}
-          <div class="photo-grid">
-            {{ range . }}
-              <img src="{{ .RelPermalink }}" alt="">
-            {{ end }}
-          </div>
-          {{ end }}
-
-        </div>
-      {{ end }}
-    {{ else }}
-      <p class="empty-hint">No group photos yet.</p>
+    <ul>
+    {{ range .Resources.ByType "image" }}
+      <li>
+        <p>{{ .Name }}</p>
+        <img src="{{ .RelPermalink }}" style="max-width:400px;border:2px solid red;">
+      </li>
     {{ end }}
-  </section>
+    </ul>
 
-  <!-- ========================= -->
-  <!-- ② Projects & Videos -->
-  <!-- ========================= -->
-  <section class="projects-section">
-    <h2>Projects &amp; Presentations</h2>
-
-    {{ $projects := where .Site.RegularPages "Section" "photos" }}
-    {{ $projects = where $projects "File.Dir" "in" "photos/projects/" }}
-
-    {{ if gt (len $projects) 0 }}
-      {{ range $projects }}
-        <div class="project-block">
-          <h3>{{ .Title }}</h3>
-
-          {{ with .Params.video }}
-            <div class="video-wrapper">
-              {{ . | safeHTML }}
-            </div>
-          {{ end }}
-
-        </div>
-      {{ end }}
-    {{ else }}
-      <p class="empty-hint">No project videos yet.</p>
-    {{ end }}
-  </section>
-
-</div>
+  {{ end }}
+{{ end }}
 
 {{ end }}
