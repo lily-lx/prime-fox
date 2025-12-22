@@ -22,17 +22,19 @@
 <section class="photos-section">
   <h2>Group Photos</h2>
 
-  {{ $groups := where .Site.RegularPages "File.Path" "hasPrefix" "photos/group/" }}
+  {{ $found := false }}
 
-  {{ if gt (len $groups) 0 }}
-    {{ range $groups }}
+  {{ range .Site.RegularPages }}
+    {{ if strings.HasPrefix .File.Path "photos/group/" }}
+      {{ if not $found }}{{ $found = true }}{{ end }}
       {{ partial "photo-grid.html" . }}
     {{ end }}
-  {{ else }}
+  {{ end }}
+
+  {{ if not $found }}
     <p class="empty-hint">No group photos yet.</p>
   {{ end }}
 </section>
-
 
   <!-- ================= Projects & Presentations ================= -->
   <section class="projects-section" style="margin-top:48px;">
