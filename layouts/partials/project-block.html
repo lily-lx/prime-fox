@@ -1,28 +1,50 @@
-<div class="project-block">
+<div class="project-block" style="margin-bottom:48px;">
 
   <h3 class="project-title">{{ .Title }}</h3>
 
-  <div class="project-media">
+  <!-- ================= 视频型项目 ================= -->
+  {{ if .Params.platform }}
 
-    {{ if eq .Params.platform "bilibili" }}
-      <iframe
-        src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}&page=1"
-        scrolling="no"
-        frameborder="0"
-        allowfullscreen="true">
-      </iframe>
+    <div class="project-media" style="margin-top:12px;">
+      {{ if eq .Params.platform "bilibili" }}
+        <iframe
+          src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}&page=1"
+          frameborder="0"
+          allowfullscreen
+          width="560"
+          height="315">
+        </iframe>
 
-    {{ else if eq .Params.platform "youtube" }}
-      <iframe
-        src="https://www.youtube.com/embed/{{ .Params.video_id }}"
-        frameborder="0"
-        allowfullscreen>
-      </iframe>
+      {{ else if eq .Params.platform "youtube" }}
+        <iframe
+          src="https://www.youtube.com/embed/{{ .Params.video_id }}"
+          frameborder="0"
+          allowfullscreen
+          width="560"
+          height="315">
+        </iframe>
 
+      {{ else }}
+        <p class="empty-hint">Unsupported video platform.</p>
+      {{ end }}
+    </div>
+
+  <!-- ================= 图片型项目 ================= -->
+  {{ else }}
+
+    {{ with .Resources.Match "*.{jpg,jpeg,png,JPG,PNG}" }}
+      <div class="project-images" style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
+        {{ range . }}
+          <img
+            src="{{ .RelPermalink }}"
+            alt="{{ $.Title }}"
+            style="max-width:300px;border-radius:8px;">
+        {{ end }}
+      </div>
     {{ else }}
-      <p class="empty-hint">Unsupported video platform.</p>
+      <p class="empty-hint">No images available.</p>
     {{ end }}
 
-  </div>
+  {{ end }}
 
 </div>
