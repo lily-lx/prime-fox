@@ -27,21 +27,7 @@
   <!-- ================= Projects & Presentations ================= -->
   <section class="projects-section" style="margin-top:48px;">
     <h2>Projects &amp; Presentations</h2>
-      <p style="color:red;font-weight:bold;">
-    DEBUG: Projects section rendered
-        <p style="color:green;">DEBUG: Listing all RegularPages</p>
-
-<ul style="font-size:12px; line-height:1.6;">
-{{ range .Site.RegularPages }}
-  <li>
-    {{ .File.Path }} |
-    Section={{ .Section }} |
-    Type={{ .Type }}
-  </li>
-{{ end }}
-</ul>
-
-  </p>
+    
 {{ $projects := slice }}
 {{ range .Site.RegularPages }}
   {{ if strings.HasPrefix .File.Path "photos/projects/" }}
