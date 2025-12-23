@@ -1,3 +1,13 @@
+<p style="color:red;">
+  DEBUG project: {{ .File.Path }} <br>
+  Resources: {{ len .Resources }}
+</p>
+<ul>
+{{ range .Resources }}
+  <li>{{ .Name }} | {{ .MediaType }}</li>
+{{ end }}
+</ul>
+
 <div class="project-block" style="margin-bottom:48px;">
 
   <h3 class="project-title">{{ .Title }}</h3>
