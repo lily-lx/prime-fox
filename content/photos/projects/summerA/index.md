@@ -1,3 +1,3 @@
 ---
-title: "Projects & Presentations"
+title: "Conference Presentation 2024"
 ---
