@@ -34,28 +34,17 @@
     {{ $projects = $projects | append . }}
   {{ end }}
 {{ end }}
- 
 
-    {{ if gt (len $projects) 0 }}
-      {{ range $projects }}
-        <h3>{{ .Title }}</h3>
-
-        {{ with .Params.video }}
-          <iframe
-            src="{{ . }}"
-            width="560"
-            height="315"
-            frameborder="0"
-            allowfullscreen>
-          </iframe>
-        {{ end }}
-
-      {{ end }}
-    {{ else }}
-      <p>No project videos yet.</p>
+   {{ if gt (len $projects) 0 }}
+    {{ range $projects }}
+      {{ partial "project-block.html" . }}
     {{ end }}
-  </section>
+  {{ else }}
+    <p>No project content yet.</p>
+  {{ end }}
+</section>
 
+       
 </div>
 
 {{ end }}
