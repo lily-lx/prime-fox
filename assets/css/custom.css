@@ -80,15 +80,35 @@
   margin: 24px 0 12px;
   color: #0b3c6d;   /* 学术深蓝 */
 }
-.project-video {
-  max-width: 960px;
-  margin: 24px auto;
+/* ===== 视频网格（一行两个） ===== */
+.project-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 24px 0;
 }
 
-.project-video iframe,
-.project-video video {
+/* 单个视频卡片 */
+.project-video {
+  background: #111;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.15);
+}
+
+/* 统一 video / iframe 尺寸 */
+.project-video video,
+.project-video iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  object-fit: cover;
+  display: block;
+  border: none;
+}
+
+/* 移动端：一行一个 */
+@media (max-width: 768px) {
+  .project-video-grid {
+    grid-template-columns: 1fr;
+  }
 }
