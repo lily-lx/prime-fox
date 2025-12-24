@@ -1,31 +1,94 @@
 <div class="project-block">
   <h3>{{ .Title }}</h3>
-{{/* 1️⃣ 本地视频（Page Resource） */}}
-{{ $videos := .Resources.Match "*.mp4" }}
-{{ if gt (len $videos) 0 }}
-  {{ range $videos }}
-    <div class="project-media project-video">
-      <video controls preload="metadata">
-        <source src="{{ .RelPermalink }}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
-  {{ end }}
-{{ end }}
-   
-  {{/* 2️⃣ Bilibili 视频 */}}
-  {{ with .Params.video_bilibili }}
-    <div class="project-media project-video">
-      <iframe
-        src="https://player.bilibili.com/player.html?bvid={{ . }}&page=1"
-        scrolling="no"
-        frameborder="0"
-        allowfullscreen>
-      </iframe>
+
+  {{/* ===== 视频区域 ===== */}}
+  {{ $videos := .Resources.Match "*.mp4" }}
+
+  {{ if or (gt (len $videos) 0) .Params.video_id }}
+    <div class="project-video-grid">
+
+      {{/* 本地视频 */}}
+      {{ range $videos }}
+        <div class="project-video">
+          <video controls preload="metadata">
+            <source src="{{ .RelPermalink }}" type="video/mp4">
+          </video>
+        </div>
+      {{ end }}
+
+      {{/* Bilibili / YouTube */}}
+      {{ if .Params.video_id }}
+        <div class="project-video">
+          {{ if eq .Params.platform "bilibili" }}
+            <iframe
+              src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          {{ else if eq .Params.platform "youtube" }}
+            <iframe
+              src="https://www.youtube.com/embed/{{ .Params.video_id }}"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          {{ end }}
+        </div>
+      {{ end }}
+
     </div>
   {{ end }}
 
-  {{/* 2️⃣ 图片 */}}
+  {{/* ===== 图片 ===== */}}
+  {{ $images := .Resources.ByType "image" }}
+  {{ if gt (len $images) 0 }}
+    <div class="photo-grid">
+      {{ range $images }}
+        <img src="{{ .RelPermalink }}" alt="">
+      {{ end }}
+    </div>
+  {{ end }}
+</div>
+<div class="project-block">
+  <h3>{{ .Title }}</h3>
+
+  {{/* ===== 视频区域 ===== */}}
+  {{ $videos := .Resources.Match "*.mp4" }}
+
+  {{ if or (gt (len $videos) 0) .Params.video_id }}
+    <div class="project-video-grid">
+
+      {{/* 本地视频 */}}
+      {{ range $videos }}
+        <div class="project-video">
+          <video controls preload="metadata">
+            <source src="{{ .RelPermalink }}" type="video/mp4">
+          </video>
+        </div>
+      {{ end }}
+
+      {{/* Bilibili / YouTube */}}
+      {{ if .Params.video_id }}
+        <div class="project-video">
+          {{ if eq .Params.platform "bilibili" }}
+            <iframe
+              src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          {{ else if eq .Params.platform "youtube" }}
+            <iframe
+              src="https://www.youtube.com/embed/{{ .Params.video_id }}"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          {{ end }}
+        </div>
+      {{ end }}
+
+    </div>
+  {{ end }}
+
+  {{/* ===== 图片 ===== */}}
   {{ $images := .Resources.ByType "image" }}
   {{ if gt (len $images) 0 }}
     <div class="photo-grid">
