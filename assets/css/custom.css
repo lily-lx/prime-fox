@@ -80,13 +80,3 @@
   margin: 24px 0 12px;
   color: #0b3c6d;   /* 学术深蓝 */
 }
-
-.photos-page h1::after {
-  content: "";
-  display: block;
-  width: 64px;
-  height: 4px;
-  margin-top: 12px;
-  background: #0b3c6d;
-  border-radius: 2px;
-}
