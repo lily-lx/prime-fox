@@ -1,21 +1,26 @@
 <div class="project-block">
   <h3>{{ .Title }}</h3>
 
-  {{/* 1️⃣ 视频 */}}
-  {{ if .Params.video_id }}
-    {{ if eq .Params.platform "bilibili" }}
+   {{/* 1️⃣ 本地视频 */}}
+  {{ with .Params.video_local }}
+    <div class="project-media project-video">
+      <video controls preload="metadata">
+        <source src="{{ . | relURL }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  {{ end }}
+
+  {{/* 2️⃣ Bilibili 视频 */}}
+  {{ with .Params.video_bilibili }}
+    <div class="project-media project-video">
       <iframe
-        src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}"
+        src="https://player.bilibili.com/player.html?bvid={{ . }}&page=1"
+        scrolling="no"
         frameborder="0"
         allowfullscreen>
       </iframe>
-    {{ else if eq .Params.platform "youtube" }}
-      <iframe
-        src="https://www.youtube.com/embed/{{ .Params.video_id }}"
-        frameborder="0"
-        allowfullscreen>
-      </iframe>
-    {{ end }}
+    </div>
   {{ end }}
 
   {{/* 2️⃣ 图片 */}}
