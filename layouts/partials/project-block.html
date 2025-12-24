@@ -1,16 +1,18 @@
 <div class="project-block">
   <h3>{{ .Title }}</h3>
-
-   {{/* 1️⃣ 本地视频 */}}
-  {{ with .Params.video_local }}
+{{/* 1️⃣ 本地视频（Page Resource） */}}
+{{ $videos := .Resources.Match "*.mp4" }}
+{{ if gt (len $videos) 0 }}
+  {{ range $videos }}
     <div class="project-media project-video">
       <video controls preload="metadata">
-        <source src="{{ . | relURL }}" type="video/mp4">
+        <source src="{{ .RelPermalink }}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
   {{ end }}
-
+{{ end }}
+   
   {{/* 2️⃣ Bilibili 视频 */}}
   {{ with .Params.video_bilibili }}
     <div class="project-media project-video">
