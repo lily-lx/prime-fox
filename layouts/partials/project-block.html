@@ -2,41 +2,41 @@
   <h3>{{ .Title }}</h3>
 
   {{/* ===== 视频区域 ===== */}}
-  {{ $videos := .Resources.Match "*.mp4" }}
+ {{ with .Params.videos }}
+  <div class="project-video-grid">
 
-  {{ if or (gt (len $videos) 0) .Params.video_id }}
-    <div class="project-video-grid">
+    {{ range . }}
+      <div class="project-video">
 
-      {{/* 本地视频 */}}
-      {{ range $videos }}
-        <div class="project-video">
-          <video controls preload="metadata">
-            <source src="{{ .RelPermalink }}" type="video/mp4">
-          </video>
-        </div>
-      {{ end }}
-
-      {{/* Bilibili / YouTube */}}
-      {{ if .Params.video_id }}
-        <div class="project-video">
-          {{ if eq .Params.platform "bilibili" }}
-            <iframe
-              src="https://player.bilibili.com/player.html?bvid={{ .Params.video_id }}"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          {{ else if eq .Params.platform "youtube" }}
-            <iframe
-              src="https://www.youtube.com/embed/{{ .Params.video_id }}"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
+        {{ if eq .type "local" }}
+          {{ with $.Resources.GetMatch .src }}
+            <video controls preload="metadata">
+              <source src="{{ .RelPermalink }}" type="video/mp4">
+            </video>
           {{ end }}
-        </div>
-      {{ end }}
 
-    </div>
-  {{ end }}
+        {{ else if eq .type "bilibili" }}
+          <iframe
+            src="https://player.bilibili.com/player.html?bvid={{ .video_id }}"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+
+        {{ else if eq .type "youtube" }}
+          <iframe
+            src="https://www.youtube.com/embed/{{ .video_id }}"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+
+        {{ end }}
+
+      </div>
+    {{ end }}
+
+  </div>
+{{ end }}
+
 
   {{/* ===== 图片 ===== */}}
   {{ $images := .Resources.ByType "image" }}
