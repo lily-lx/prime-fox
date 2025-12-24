@@ -1,4 +1,6 @@
 ---
 title: "SLAM Project Demo"
-video_local: "demo.mp4"
+videos:
+  - type: local
+    src: demo.mp4
 ---
