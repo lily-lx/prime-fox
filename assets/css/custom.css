@@ -80,3 +80,15 @@
   margin: 24px 0 12px;
   color: #0b3c6d;   /* 学术深蓝 */
 }
+.project-video {
+  max-width: 960px;
+  margin: 24px auto;
+}
+
+.project-video iframe,
+.project-video video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
