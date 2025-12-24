@@ -1,4 +1,5 @@
 ---
 title: "SLAM Project Demo"
-video_bilibili: "BV1Ey4y1B7ud"
+platform: bilibili
+video_id: BV1Ey4y1B7ud
 ---
